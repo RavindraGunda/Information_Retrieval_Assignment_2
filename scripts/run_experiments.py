@@ -62,6 +62,11 @@ def main() -> None:
         "configs": config_snapshot(preprocess=prep, tfidf=tfidf_cfg, dedup=dedup, naive_bayes=nb_cfg, kmeans=km_cfg),
     }
     (out / "baseline.json").write_text(json.dumps(baseline, indent=2, default=str))
+    if prep.normalizer == "lemmatize":
+        print(f"Lemmatizer backend: {pp.LEMMATIZER_BACKEND}")
+        if pp.LEMMATIZER_BACKEND != "NLTK WordNet":
+            print("WARNING: WordNet could not be loaded; results use the rule-based fallback and will "
+                  "differ from the report. Download it with: python -c \"import nltk; nltk.download('wordnet')\"")
     save("baseline_classification_report", cr.report)
     save("baseline_confusion_matrix", cr.confusion.reset_index(names="actual"))
     save("baseline_contingency", kr.contingency.reset_index(names="cluster"))

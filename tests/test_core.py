@@ -122,6 +122,24 @@ def test_empty_vocabulary_is_reported():
         raise AssertionError("expected ValueError")
 
 
+def test_naive_bayes_features_come_from_training_articles_only():
+    import pandas as pd
+    from core.data_loader import Corpus
+    from core.pipeline import DedupConfig, NBConfig, build_features, run_classification
+    # Each article has its own unique word, so the full-corpus vocabulary is larger
+    # than the vocabulary of the training articles alone.
+    texts = [f"{'market shares profit' if i % 2 else 'match goal team'} uniqueword{chr(97 + i)}" for i in range(20)]
+    labels = ["business" if i % 2 else "sport" for i in range(20)]
+    ids = [f"d{i}" for i in range(20)]
+    c = Corpus(pd.Series(texts, index=ids), pd.DataFrame({"category": labels}, index=ids))
+    fs = build_features(c, PreprocessConfig(normalizer="none"),
+                        TfidfConfig(min_df=1, max_df_ratio=1.0, max_features=0), DedupConfig(remove_exact=False))
+    cr = run_classification(fs, NBConfig(test_size=0.2, seed=1, group_duplicates=False))
+    train_terms = {t for i in cr.train_idx for t in fs.tokens[i]}
+    assert cr.model.n_features_ == len(train_terms) < len(fs.model.vocab)
+    assert cr.scores["accuracy"] == 1.0
+
+
 def test_kmeans_separates_obvious_clusters():
     rng = np.random.default_rng(0)
     X = np.vstack([rng.normal(0, 0.1, (30, 2)), rng.normal(5, 0.1, (30, 2))]).astype(np.float32)

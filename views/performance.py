@@ -81,8 +81,8 @@ def experiment(key: str, title: str, runner, help_text: str):
 
 corpus = state.corpus()
 cfgs = dict(tfidf_cfg=state.cfg("tfidf"), nb_cfg=state.cfg("nb"), km_cfg=state.cfg("km"))
-t1, t2, t3, t4, t5, t6 = st.tabs(["1. Preprocessing", "2. Duplicates", "3. Choice of k", "4. Initialisation",
-                                  "5. Recommender", "6. Naive Bayes variants"])
+t1, t2, t3, t4, t5, t6, t7 = st.tabs(["1. Preprocessing", "2. Duplicates", "3. Choice of k", "4. Initialisation",
+                                      "5. Recommender", "6. Naive Bayes variants", "7. Near-duplicate threshold"])
 
 with t1:
     df = experiment("exp1_preprocessing_ablation", "Effect of preprocessing choices",
@@ -153,3 +153,23 @@ with t6:
     if df is not None:
         fig = px.line(df, x="alpha", y="accuracy", color="features", markers=True, log_x=True)
         charts.show(fig, 380, "Accuracy vs smoothing alpha")
+
+with t7:
+    df = experiment("exp7_near_dup_threshold", "Choosing the near-duplicate threshold",
+                    lambda p: ex.near_duplicate_sweep(corpus, state.cfg("prep"), progress=p, **cfgs),
+                    "Exact duplicates removed, then near-duplicates removed at cosine 0.80, 0.85, 0.90 and 0.95. "
+                    "Supports report question 2.")
+    if df is not None:
+        l, r = st.columns(2)
+        with l:
+            fig = px.bar(df, x=df["threshold"].astype(str), y="removed_near", text_auto=True,
+                         color_discrete_sequence=["#2F6DB5"])
+            fig.update_xaxes(title="cosine threshold")
+            fig.update_yaxes(title="near-duplicates removed")
+            charts.show(fig, 360, "Articles removed as near-duplicates")
+        with r:
+            metric_cols = [c for c in ("nb_accuracy", "km_purity", "km_rand_index") if c in df.columns] + \
+                          [c for c in df.columns if c.startswith("rec_precision")]
+            fig = px.line(df, x="threshold", y=metric_cols, markers=True)
+            fig.update_xaxes(title="cosine threshold")
+            charts.show(fig, 360, "Quality metrics by threshold")

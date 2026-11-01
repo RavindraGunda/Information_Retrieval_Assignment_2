@@ -106,7 +106,8 @@ with tab_nb:
                                "prior P(c)": [d["priors"][c] for c in d["classes"]],
                                "total term count": cr.model.feature_count_.sum(axis=1).round(1)})
         charts.table(priors)
-        st.caption(f"Vocabulary |V| = {d['vocabulary_size']:,} · alpha = {d['alpha']} · features = {cr.config.features}")
+        st.caption(f"Vocabulary |V| = {d['vocabulary_size']:,}, chosen and weighted using the training articles only "
+                   f"(test articles never influence the features) · alpha = {d['alpha']} · features = {cr.config.features}")
 
     l, r = st.columns(2)
     with l:

@@ -53,7 +53,7 @@ Then install the packages:
 pip install -r requirements.txt
 ```
 
-**NLTK data.** Porter stemming is the default normalizer and needs no download. WordNet lemmatization is available in the UI; its data downloads the first time it is used, which needs internet. If the download fails, the app falls back to a small rule-based lemmatizer and `results/baseline.json` records the active backend.
+**NLTK data.** WordNet lemmatization is the default normalizer. Its data downloads the first time it is used, which needs internet (`scripts/lab_run.sh` downloads it up front). If the download fails, the code falls back to a small rule-based lemmatizer: the Preprocessing page shows a warning, `scripts/run_experiments.py` prints one, and `results/baseline.json` records the active backend in `lemmatizer_backend`. Porter stemming and the stop-word lists need no download.
 
 ---
 
@@ -125,7 +125,7 @@ Note: `--sample` also writes to `results/` and overwrites the full-corpus tables
 
 Headline numbers (full corpus, default settings) are produced by `python scripts/run_experiments.py` and written to `results/baseline.json`.
 
-**Run the tests** (13 tests, including the textbook examples from Manning et al. for Naive Bayes, Purity and Rand Index):
+**Run the tests** (14 tests, including the textbook examples from Manning et al. for Naive Bayes, Purity and Rand Index):
 
 ```bash
 python -m tests.test_core
@@ -209,7 +209,7 @@ ir assignment 2/
 │   ├── recommender.py        # Top-K content-based and hybrid recommendations, Precision@K
 │   ├── reduction.py          # PCA to 2-D (used only for the cluster plot)
 │   ├── pipeline.py           # Ties the steps together; config classes
-│   └── experiments.py        # The six experiments (used by the app and the script)
+│   └── experiments.py        # The seven experiments (used by the app and the script)
 ├── views/                    # The six app pages
 │   ├── dashboard.py          # Dashboard
 │   ├── ingestion.py          # Data Ingestion
@@ -225,7 +225,7 @@ ir assignment 2/
 │   ├── lab_run.sh            # One-shot BITS lab run: install, test, experiments, zip
 │   └── prepare_dataset.py    # Builds data/*.csv from the raw Hugging Face CSV
 ├── tests/
-│   └── test_core.py          # 13 sanity tests for the hand-written algorithms
+│   └── test_core.py          # 14 sanity tests for the hand-written algorithms
 ├── data/
 │   ├── raw/bbc-news-summary.csv  # Raw dataset from Hugging Face
 │   ├── bbc_documents.csv     # doc_id, text

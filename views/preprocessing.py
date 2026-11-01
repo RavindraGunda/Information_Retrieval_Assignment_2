@@ -70,7 +70,12 @@ prep = fs.prep
 model = fs.model
 
 if prep.normalizer == "lemmatize":
-    st.caption(f"Lemmatizer backend: {pp.LEMMATIZER_BACKEND}")
+    if pp.LEMMATIZER_BACKEND == "NLTK WordNet":
+        st.caption(f"Lemmatizer backend: {pp.LEMMATIZER_BACKEND}")
+    else:
+        st.warning(f"WordNet could not be loaded, so lemmatization is using the {pp.LEMMATIZER_BACKEND}. "
+                   "Results will differ from the report. Run `python -c \"import nltk; nltk.download('wordnet')\"` "
+                   "with internet access, or choose Porter stemming.")
 
 tab_trace, tab_vocab, tab_tfidf, tab_index, tab_sim, tab_dup = st.tabs(
     ["Step-by-step example", "Vocabulary before / after", "TF-IDF features", "Inverted index explorer",

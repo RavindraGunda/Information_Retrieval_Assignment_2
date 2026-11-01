@@ -1,20 +1,21 @@
 Corpus: BBC News | {'documents': 2224, 'categories': 5, 'raw_text_mb': np.float64(4.96), 'avg_words': np.float64(375.1), 'median_words': 323, 'min_words': 83, 'max_words': 4374, 'total_words': 834181}
+Lemmatizer backend: NLTK WordNet
 
 == baseline_classification_report ==
         class  precision  recall     f1  support
-     business     0.9697  0.9600 0.9648      100
+     business     0.9796  0.9600 0.9697      100
 entertainment     0.9859  0.9589 0.9722       73
-     politics     0.9500  0.9620 0.9560       79
+     politics     0.9494  0.9494 0.9494       79
         sport     0.9899  1.0000 0.9949       98
-         tech     0.9559  0.9701 0.9630       67
-    macro avg     0.9703  0.9702 0.9702      417
- weighted avg     0.9713  0.9712 0.9712      417
+         tech     0.9286  0.9701 0.9489       67
+    macro avg     0.9667  0.9677 0.9670      417
+ weighted avg     0.9692  0.9688 0.9689      417
 
 == baseline_confusion_matrix ==
                actual  pred: business  pred: entertainment  pred: politics  pred: sport  pred: tech
      actual: business              96                    0               3            0           1
-actual: entertainment               1                   70               1            0           1
-     actual: politics               1                    1              76            0           1
+actual: entertainment               0                   70               1            0           2
+     actual: politics               1                    1              75            0           2
         actual: sport               0                    0               0           98           0
          actual: tech               1                    0               0            1          65
 
@@ -38,14 +39,14 @@ Running preprocessing ablation...
 
 == exp1_preprocessing_ablation ==
                                 config  full_vocabulary  vocab_after_df_filter  features_used  avg_tokens_per_doc  nb_accuracy  nb_macro_f1  test_docs_with_copy_in_train  km_purity  km_rand_index    km_sse  rec_precision_at_5  rec_dup_in_top_5  seconds
-   A. Minimal (lowercase + split only)            29835                  17132           5000               456.8       0.9760       0.9744                             0     0.9626         0.9715 1935.7962              0.9318            0.0144     2.71
-B. No lowercasing (cleaned, case kept)            32026                  18311           5000               369.3       0.9736       0.9720                             0     0.9650         0.9732 1941.6720              0.9324            0.0144     3.17
-                C. Cleaned + lowercase            27875                  16341           5000               369.3       0.9736       0.9717                             0     0.9636         0.9721 1940.1659              0.9309            0.0144     2.93
-                D. + stop-word removal            27723                  16198           5000               213.2       0.9688       0.9671                             0     0.9616         0.9710 1956.6573              0.9326            0.0144     3.12
-                  E. + Porter stemming            18967                  11038           5000               213.2       0.9712       0.9709                             0     0.9660         0.9738 1939.9517              0.9327            0.0163     3.42
-            F. + WordNet lemmatization            21025                  12137           5000               213.2       0.9712       0.9702                             0     0.9482         0.9603 1943.7367              0.9300            0.0163     2.99
-          G. + lemmatization + bigrams           322388                  63504           5000               425.4       0.9664       0.9643                             0     0.9660         0.9743 1942.4411              0.9391            0.0144     3.63
-  H. + lemmatization + news stop-words            21015                  12124           5000               195.3       0.9688       0.9676                             0     0.9501         0.9620 1948.4270              0.9308            0.0163     2.90
+   A. Minimal (lowercase + split only)            29835                  17132           5000               456.8       0.9760       0.9744                             0     0.9626         0.9715 1935.7962              0.9318            0.0144     3.42
+B. No lowercasing (cleaned, case kept)            32026                  18311           5000               369.3       0.9736       0.9720                             0     0.9650         0.9732 1941.6720              0.9324            0.0144     3.59
+                C. Cleaned + lowercase            27875                  16341           5000               369.3       0.9712       0.9695                             0     0.9636         0.9721 1940.1659              0.9309            0.0144     3.57
+                D. + stop-word removal            27723                  16198           5000               213.2       0.9616       0.9601                             0     0.9616         0.9710 1956.6573              0.9326            0.0144     3.69
+                  E. + Porter stemming            18967                  11038           5000               213.2       0.9736       0.9732                             0     0.9660         0.9738 1939.9517              0.9327            0.0163     4.02
+            F. + WordNet lemmatization            21025                  12137           5000               213.2       0.9688       0.9670                             0     0.9482         0.9603 1943.7367              0.9300            0.0163     3.54
+          G. + lemmatization + bigrams           322388                  63504           5000               425.4       0.9688       0.9667                             0     0.9660         0.9743 1942.4411              0.9391            0.0144     4.13
+  H. + lemmatization + news stop-words            21015                  12124           5000               195.3       0.9688       0.9673                             0     0.9501         0.9620 1948.4270              0.9308            0.0163     3.55
 
 Running duplicate impact...
    - 1. Keep duplicates, random split
@@ -55,10 +56,10 @@ Running duplicate impact...
 
 == exp2_duplicate_impact ==
                                  scenario  documents  removed_exact  removed_near  near_dup_pairs_left  nb_accuracy  nb_macro_f1  test_docs_with_copy_in_train  km_purity  km_rand_index    km_sse  rec_precision_at_5  rec_dup_in_top_5
-         1. Keep duplicates, random split       2224              0             0                  163       0.9640       0.9630                            38     0.9640         0.9730 2071.0445              0.9337            0.1394
-2. Keep duplicates, duplicate-aware split       2224              0             0                  163       0.9693       0.9687                             0     0.9640         0.9730 2071.0445              0.9337            0.1394
-               3. Remove exact duplicates       2086            138             0                   24       0.9712       0.9702                             0     0.9482         0.9603 1943.7367              0.9300            0.0163
-      4. Remove exact + near (cos >= 0.9)       2062            138            24                    0       0.9684       0.9684                             0     0.9665         0.9746 1921.4939              0.9289            0.0000
+         1. Keep duplicates, random split       2224              0             0                  163       0.9662       0.9653                            38     0.9640         0.9730 2071.0445              0.9337            0.1394
+2. Keep duplicates, duplicate-aware split       2224              0             0                  163       0.9693       0.9685                             0     0.9640         0.9730 2071.0445              0.9337            0.1394
+               3. Remove exact duplicates       2086            138             0                   24       0.9688       0.9670                             0     0.9482         0.9603 1943.7367              0.9300            0.0163
+      4. Remove exact + near (cos >= 0.9)       2062            138            24                    0       0.9733       0.9725                             0     0.9665         0.9746 1921.4939              0.9289            0.0000
 
 == exp3_k_sweep ==
  k       sse  purity  rand_index  iterations
@@ -112,19 +113,32 @@ hybrid (cluster weight 0.5) 10          0.9575                           0.0163
 
 == exp6_naive_bayes_variants ==
 features  alpha  accuracy  macro_f1
-  counts   0.01    0.9736    0.9724
-  counts   0.10    0.9736    0.9724
-  counts   0.50    0.9736    0.9724
-  counts   1.00    0.9712    0.9702
-  counts   2.00    0.9712    0.9699
-   tfidf   0.01    0.9736    0.9728
-   tfidf   0.10    0.9736    0.9724
-   tfidf   0.50    0.9712    0.9701
-   tfidf   1.00    0.9688    0.9679
-   tfidf   2.00    0.9664    0.9650
+  counts   0.01    0.9736    0.9721
+  counts   0.10    0.9736    0.9721
+  counts   0.50    0.9736    0.9721
+  counts   1.00    0.9688    0.9670
+  counts   2.00    0.9712    0.9693
+   tfidf   0.01    0.9688    0.9674
+   tfidf   0.10    0.9688    0.9674
+   tfidf   0.50    0.9688    0.9673
+   tfidf   1.00    0.9688    0.9674
+   tfidf   2.00    0.9664    0.9645
 
-All experiments finished in 63.5s -> C:\Users\chira\PycharmProjects\PythonProject\ir assignment 2\results
+Running near-duplicate threshold sweep...
+   - threshold = 0.8
+   - threshold = 0.85
+   - threshold = 0.9
+   - threshold = 0.95
 
-real	1m4.307s
-user	0m0.000s
-sys	0m0.015s
+== exp7_near_dup_threshold ==
+ threshold  documents  removed_exact  removed_near  near_dup_pairs_left  nb_accuracy  nb_macro_f1  test_docs_with_copy_in_train  km_purity  km_rand_index    km_sse  rec_precision_at_5  rec_dup_in_top_5
+      0.80       2054            138            32                    0       0.9829       0.9823                             0     0.9620         0.9718 1914.1303              0.9298               0.0
+      0.85       2057            138            29                    0       0.9756       0.9757                             0     0.9665         0.9743 1916.8257              0.9296               0.0
+      0.90       2062            138            24                    0       0.9733       0.9725                             0     0.9665         0.9746 1921.4939              0.9289               0.0
+      0.95       2068            138            18                    0       0.9735       0.9720                             0     0.9632         0.9724 1926.9126              0.9299               0.0
+
+All experiments finished in 89.7s -> C:\Users\chira\PycharmProjects\PythonProject\ir assignment 2\results
+
+real	1m30.519s
+user	0m0.015s
+sys	0m0.000s

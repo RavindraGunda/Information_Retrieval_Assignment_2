@@ -15,11 +15,11 @@
     "empty_documents": 0
   },
   "naive_bayes": {
-    "accuracy": 0.9712230215827338,
-    "macro_precision": 0.9702787610989765,
-    "macro_recall": 0.9702157359552162,
-    "macro_f1": 0.9701816012847031,
-    "weighted_f1": 0.9712175142703228
+    "accuracy": 0.9688249400479616,
+    "macro_precision": 0.9666689673540908,
+    "macro_recall": 0.9676840903855959,
+    "macro_f1": 0.9670230495767715,
+    "weighted_f1": 0.9688755386061189
   },
   "kmeans": {
     "purity": 0.9482262703739214,
@@ -35,6 +35,7 @@
       "0": "tech"
     }
   },
+  "lemmatizer_backend": "NLTK WordNet",
   "configs": {
     "preprocess": {
       "include_title": true,
