@@ -1,0 +1,10 @@
+date: Wed Nov  4 10:53:56 PM IST 2026
+host: ip-10-3-20-152.ap-south-1.compute.internal
+python: Python 3.12.7
+Linux ip-10-3-20-152.ap-south-1.compute.internal 5.14.0-503.14.1.el9_5.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Nov 15 12:04:32 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+cpus: 4
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       3.3Gi        10Gi        40Mi       2.0Gi        11Gi
+Swap:          2.0Gi          0B       2.0Gi
+gpu: n/a
+experiments took 784 s

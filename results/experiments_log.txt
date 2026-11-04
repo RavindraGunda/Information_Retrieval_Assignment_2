@@ -39,14 +39,14 @@ Running preprocessing ablation...
 
 == exp1_preprocessing_ablation ==
                                 config  full_vocabulary  vocab_after_df_filter  features_used  avg_tokens_per_doc  nb_accuracy  nb_macro_f1  test_docs_with_copy_in_train  km_purity  km_rand_index    km_sse  rec_precision_at_5  rec_dup_in_top_5  seconds
-   A. Minimal (lowercase + split only)            29835                  17132           5000               456.8       0.9760       0.9744                             0     0.9626         0.9715 1935.7962              0.9318            0.0144     3.42
-B. No lowercasing (cleaned, case kept)            32026                  18311           5000               369.3       0.9736       0.9720                             0     0.9650         0.9732 1941.6720              0.9324            0.0144     3.59
-                C. Cleaned + lowercase            27875                  16341           5000               369.3       0.9712       0.9695                             0     0.9636         0.9721 1940.1659              0.9309            0.0144     3.57
-                D. + stop-word removal            27723                  16198           5000               213.2       0.9616       0.9601                             0     0.9616         0.9710 1956.6573              0.9326            0.0144     3.69
-                  E. + Porter stemming            18967                  11038           5000               213.2       0.9736       0.9732                             0     0.9660         0.9738 1939.9517              0.9327            0.0163     4.02
-            F. + WordNet lemmatization            21025                  12137           5000               213.2       0.9688       0.9670                             0     0.9482         0.9603 1943.7367              0.9300            0.0163     3.54
-          G. + lemmatization + bigrams           322388                  63504           5000               425.4       0.9688       0.9667                             0     0.9660         0.9743 1942.4411              0.9391            0.0144     4.13
-  H. + lemmatization + news stop-words            21015                  12124           5000               195.3       0.9688       0.9673                             0     0.9501         0.9620 1948.4270              0.9308            0.0163     3.55
+   A. Minimal (lowercase + split only)            29835                  17132           5000               456.8       0.9760       0.9744                             0     0.9626         0.9715 1935.7962              0.9318            0.0144    28.95
+B. No lowercasing (cleaned, case kept)            32026                  18311           5000               369.3       0.9736       0.9720                             0     0.9650         0.9732 1941.6720              0.9324            0.0144    28.80
+                C. Cleaned + lowercase            27875                  16341           5000               369.3       0.9712       0.9695                             0     0.9636         0.9721 1940.1659              0.9309            0.0144    26.68
+                D. + stop-word removal            27723                  16198           5000               213.2       0.9616       0.9601                             0     0.9616         0.9710 1956.6573              0.9326            0.0144    32.39
+                  E. + Porter stemming            18967                  11038           5000               213.2       0.9736       0.9732                             0     0.9660         0.9738 1939.9517              0.9327            0.0163    32.38
+            F. + WordNet lemmatization            21025                  12137           5000               213.2       0.9688       0.9670                             0     0.9482         0.9603 1943.7367              0.9300            0.0163    27.14
+          G. + lemmatization + bigrams           322388                  63504           5000               425.4       0.9688       0.9667                             0     0.9660         0.9743 1942.4411              0.9391            0.0144    32.88
+  H. + lemmatization + news stop-words            21015                  12124           5000               195.3       0.9688       0.9673                             0     0.9501         0.9620 1948.4270              0.9308            0.0163    31.80
 
 Running duplicate impact...
    - 1. Keep duplicates, random split
@@ -137,8 +137,4 @@ Running near-duplicate threshold sweep...
       0.90       2062            138            24                    0       0.9733       0.9725                             0     0.9665         0.9746 1921.4939              0.9289               0.0
       0.95       2068            138            18                    0       0.9735       0.9720                             0     0.9632         0.9724 1926.9126              0.9299               0.0
 
-All experiments finished in 89.7s -> C:\Users\chira\PycharmProjects\PythonProject\ir assignment 2\results
-
-real	1m30.519s
-user	0m0.015s
-sys	0m0.000s
+All experiments finished in 782.4s -> results/
