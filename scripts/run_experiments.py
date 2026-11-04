@@ -81,7 +81,12 @@ def main() -> None:
     save("exp6_naive_bayes_variants", ex.nb_variants(fs, nb_cfg))
     print("\nRunning near-duplicate threshold sweep...")
     save("exp7_near_dup_threshold", ex.near_duplicate_sweep(corpus, prep, tfidf_cfg, nb_cfg, km_cfg, progress=log))
-    print(f"\nAll experiments finished in {time.perf_counter() - t_all:.1f}s -> {out}")
+    # Print the folder relative to the project so logs never contain a machine-specific path.
+    try:
+        shown = out.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        shown = out.name
+    print(f"\nAll experiments finished in {time.perf_counter() - t_all:.1f}s -> {shown}/")
 
 
 if __name__ == "__main__":
